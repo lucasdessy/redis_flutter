@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:redis/redis.dart';
 
 class RedisRepository {
@@ -31,5 +33,21 @@ class RedisRepository {
     return List.from(await _command.send_object(["lrange", key, 0, -1]))
         .map<String>((e) => e.toString())
         .toList();
+  }
+
+  Future<String?> get(String key) async {
+    try {
+      return (await _command.send_object(['get', key])).toString();
+    } catch (err) {
+      return null;
+    }
+  }
+
+  Future<void> set(String key, dynamic value) async {
+    await _command.send_object(['set', key, value]);
+  }
+
+  Future<int> incr(String key) async {
+    return int.parse((await _command.send_object(['incr', key])).toString());
   }
 }

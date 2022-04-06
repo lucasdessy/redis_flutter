@@ -8,6 +8,7 @@ part 'queue_state.dart';
 
 class QueueCubit extends Cubit<QueueState> {
   static const queueName = 'pessoasQueue';
+  static const queuePosName = 'posicoesQueue';
   final RedisRepository redisConnection;
   QueueCubit(this.redisConnection) : super(QueueState.initial()) {
     init();
@@ -27,15 +28,7 @@ class QueueCubit extends Cubit<QueueState> {
   }
 
   Future<void> addPessoa(String nome) async {
-    final ultimaPessoaJson = await redisConnection.getLastItemList(queueName);
-    late Pessoa pessoa;
-
-    if (ultimaPessoaJson != null) {
-      final ultimaPessoa = Pessoa.fromJson(jsonDecode(ultimaPessoaJson));
-      pessoa = Pessoa(nome, ultimaPessoa.numChegada + 1);
-    } else {
-      pessoa = Pessoa(nome, 1);
-    }
+    final pessoa = Pessoa(nome, await _getNumChegada());
 
     await redisConnection.rpush(queueName, pessoa.toJson());
 
@@ -45,5 +38,17 @@ class QueueCubit extends Cubit<QueueState> {
   Future<void> atender() async {
     await redisConnection.lpop(queueName);
     await _updateList();
+  }
+
+  Future<int> _getNumChegada() async {
+    final queuePos = await redisConnection.get(queuePosName);
+    late int queuePosNum;
+    if (queuePos != null) {
+      queuePosNum = await redisConnection.incr(queuePosName);
+    } else {
+      queuePosNum = 1;
+      await redisConnection.set(queuePosName, queuePosNum);
+    }
+    return queuePosNum;
   }
 }
