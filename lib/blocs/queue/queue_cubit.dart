@@ -24,7 +24,7 @@ class QueueCubit extends Cubit<QueueState> {
     final pessoas =
         pessoasJson.map((e) => Pessoa.fromJson(jsonDecode(e))).toList();
 
-    emit(QueueState()..pessoas = pessoas);
+    emit(state.copyWith(pessoas: pessoas));
   }
 
   Future<void> addPessoa(String nome) async {
