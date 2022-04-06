@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:redis_flutter/models/pessoa.dart';
 
+// Widget que renderiza uma lista de pessoas na tela
 class PessoasList extends StatelessWidget {
   final List<Pessoa> pessoas;
   const PessoasList({required this.pessoas, Key? key}) : super(key: key);

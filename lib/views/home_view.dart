@@ -5,11 +5,15 @@ import 'package:redis_flutter/views/components/pessoas_list.dart';
 
 class HomeView extends StatelessWidget {
   HomeView({Key? key}) : super(key: key);
+
   final pessoaController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
+    // Procura o cubit que está no contexto da widget tree.
     final queueCubit = context.watch<QueueCubit>();
     final queueState = queueCubit.state;
+
     return Scaffold(
       appBar: AppBar(title: const Text('Fila')),
       body: Padding(

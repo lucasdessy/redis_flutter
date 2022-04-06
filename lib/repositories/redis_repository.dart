@@ -1,7 +1,6 @@
-import 'dart:ffi';
-
 import 'package:redis/redis.dart';
 
+// Classe que controla a conexão com o Redis.
 class RedisRepository {
   final RedisConnection redisConnection = RedisConnection();
   late Command _command;

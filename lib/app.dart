@@ -10,9 +10,12 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
+    return
+        // Injeta QueueCubit no contexto da widget tree
+        BlocProvider(
       create: (context) => QueueCubit(getIt<RedisRepository>()),
       child: MaterialApp(
+        // Cria a HomeView
         home: HomeView(),
       ),
     );

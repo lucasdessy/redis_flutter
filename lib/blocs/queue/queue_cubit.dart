@@ -6,6 +6,8 @@ import 'package:redis_flutter/repositories/redis_repository.dart';
 
 part 'queue_state.dart';
 
+// Classe que contem a lógica principal do app.
+// O cubit é responsável por controlar o fluxo de dados da aplicação.
 class QueueCubit extends Cubit<QueueState> {
   static const queueName = 'pessoasQueue';
   static const queuePosName = 'posicoesQueue';
